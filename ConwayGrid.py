@@ -117,14 +117,24 @@ class GridTable(Grid.GridTable):
         #Alternatively, a double for loop can achieve the same thing with a "col + x, row + y" type logic. I bet I can do that now
 
         #Square Fill
-        self.SetNeighbourLive(col, row + 1, setAliveList)
-        self.SetNeighbourLive(col, row - 1, setAliveList)
-        self.SetNeighbourLive(col + 1, row, setAliveList)
-        self.SetNeighbourLive(col - 1, row, setAliveList)
-        self.SetNeighbourLive(col + 1, row - 1, setAliveList)
-        self.SetNeighbourLive(col + 1, row + 1, setAliveList)
-        self.SetNeighbourLive(col - 1, row - 1, setAliveList)
-        self.SetNeighbourLive(col - 1, row + 1, setAliveList)
+        #self.SetNeighbourLive(col - 1, row - 1, setAliveList)
+        #self.SetNeighbourLive(col - 1, row, setAliveList)
+        #self.SetNeighbourLive(col - 1, row + 1, setAliveList)
+
+        #self.SetNeighbourLive(col, row + 1, setAliveList)
+        #self.SetNeighbourLive(col, row - 1, setAliveList)
+
+        #self.SetNeighbourLive(col + 1, row - 1, setAliveList)
+        #self.SetNeighbourLive(col + 1, row, setAliveList)
+        #self.SetNeighbourLive(col + 1, row + 1, setAliveList)
+
+        for x in range(-1, 2):
+            for y in range(-1, 2):
+                if (x == 0 and y == 0):
+                    continue
+                self.SetNeighbourLive(col + x, row + y, setAliveList)
+
+        
 
 
     #Dummy function for next time. Got to plan this out a bit more
