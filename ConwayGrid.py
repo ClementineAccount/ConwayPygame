@@ -89,6 +89,47 @@ class GridTable(Grid.GridTable):
     def SetNeighbourLive(self, col, row, aliveList):
         if self.checkBound(col, row):
             aliveList.append(self.accessCell(col, row))
+    
+    def SetNeighbours(self, col, row, setAliveList):
+
+        #Cool pattern but not same behavior
+        #for x in range(-1, 1):
+            #for y in range(-1, 1):
+                #This only goes in the top left quadrant...
+                #self.SetNeighbourLive(col + x, row + y, setAliveList)
+                #This only goes in the bottom right quadrant...
+                #self.SetNeighbourLive(col - x, row - y, setAliveList)
+
+        #Upper right triangle shape
+        #for x in range (-1, 1):
+        #    self.SetNeighbourLive(col + x, row, setAliveList)
+        #    self.SetNeighbourLive(col, row + x, setAliveList)
+
+        #Bottom right triangle shape
+        #for x in range (-1, 1):
+        #    self.SetNeighbourLive(col - x, row, setAliveList)
+        #    self.SetNeighbourLive(col, row - x, setAliveList)
+
+        
+        #It'd be pretty cool if there was a way to pass in a function pointer for something like this...
+        #We will worry about that after the game of life demo though...
+
+        #Alternatively, a double for loop can achieve the same thing with a "col + x, row + y" type logic. I bet I can do that now
+
+        #Square Fill
+        self.SetNeighbourLive(col, row + 1, setAliveList)
+        self.SetNeighbourLive(col, row - 1, setAliveList)
+        self.SetNeighbourLive(col + 1, row, setAliveList)
+        self.SetNeighbourLive(col - 1, row, setAliveList)
+        self.SetNeighbourLive(col + 1, row - 1, setAliveList)
+        self.SetNeighbourLive(col + 1, row + 1, setAliveList)
+        self.SetNeighbourLive(col - 1, row - 1, setAliveList)
+        self.SetNeighbourLive(col - 1, row + 1, setAliveList)
+
+
+    #Dummy function for next time. Got to plan this out a bit more
+    def SetNeighboursConway(self, col, row, setAliveList):
+        return 
 
     def UpdateGrid(self):
         # Cells to update after a check
@@ -98,15 +139,8 @@ class GridTable(Grid.GridTable):
         for row in range(self.rowCount):
             for col in range(self.colCount):
                 if self.accessCell(col, row).alive:
-                    #print("Hello")
-                    self.SetNeighbourLive(col, row + 1, setAliveList)
-                    self.SetNeighbourLive(col, row - 1, setAliveList)
-                    self.SetNeighbourLive(col + 1, row, setAliveList)
-                    self.SetNeighbourLive(col - 1, row, setAliveList)
-                    self.SetNeighbourLive(col + 1, row - 1, setAliveList)
-                    self.SetNeighbourLive(col + 1, row + 1, setAliveList)
-                    self.SetNeighbourLive(col - 1, row - 1, setAliveList)
-                    self.SetNeighbourLive(col - 1, row + 1, setAliveList)
+                    self.SetNeighbours(col, row, setAliveList)
+
 
         #After checking everyone, only then do you set the neighbours to live (determinsitic behaviour)
         for cell in setAliveList:
