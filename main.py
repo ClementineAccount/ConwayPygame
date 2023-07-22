@@ -4,7 +4,7 @@ import math
 import os
 
 # Learning to have more than one python file
-import myGrid
+import ConwayGrid
 
 # Some configuration
 width = 800
@@ -22,6 +22,12 @@ screen = pygame.display.set_mode((width, height), vsync=False, flags=pygame.RESI
 clock = pygame.time.Clock()
 running = True
 
+grid = ConwayGrid.GridTable()
+
+mouse = pygame.mouse
+
+wasRight = False
+
 while running:   
     dt = clock.tick(60) / 1000
     
@@ -30,8 +36,27 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+
+    clicks = mouse.get_pressed(3)
+
+    if clicks[0]:
+        posX = mouse.get_pos()[0];
+        posY = mouse.get_pos()[1];
+        grid.clickGrid(posX, posY)
+    
+
+    if clicks[2] and not wasRight:
+        #print("what")
+        grid.UpdateGrid()
+        wasRight = True
+    elif not clicks[2] and wasRight:
+        wasRight = False
+            
  
     # flip() the display to put your work on screen
+    #grid.setCellColor(2, 2, "green")
+    grid.draw(screen)
 
     pygame.display.flip()
     pygame.display.set_caption(str(clock.get_fps()))
