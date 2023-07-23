@@ -30,6 +30,7 @@ wasRight = False
 
 while running:   
     dt = clock.tick(60) / 1000
+   
     
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -56,6 +57,8 @@ while running:
  
     # flip() the display to put your work on screen
     #grid.setCellColor(2, 2, "green")
+
+    screen.fill("snow3")
     grid.draw(screen)
 
     pygame.display.flip()

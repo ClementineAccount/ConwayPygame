@@ -5,11 +5,11 @@ import math
 #Size of the cell represented as a rect
 defaultSize = 10
 gapSize = 1
-left = 10
-top = 10
+left = 0
+top = 0
 
 class Cell(Grid.Cell):
-    def __init__(self, inputRect : pygame.Rect, aliveColor = "red", deadColor = "blue"):
+    def __init__(self, inputRect : pygame.Rect, aliveColor = "white", deadColor = "black"):
         self.aliveColor = aliveColor
         self.deadColor = deadColor
         self.rect = inputRect
@@ -25,8 +25,9 @@ class Cell(Grid.Cell):
         self.alive = alive
 
 
+#Every ten gaps there is a block of ten 'leftover'. In order to fit it for hardcoded 800x600 I can subtract the extra gap blocks
 class GridTable(Grid.GridTable):
-    def __init__(self, colCount = 50, rowCount = 50):
+    def __init__(self, colCount = 80 - 8 + 1, rowCount = 60 - 6 + 1):
         # List of Pygame Rectangles to draw
         self.cellList = []
         self.rowCount = rowCount
