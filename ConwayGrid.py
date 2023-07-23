@@ -7,24 +7,22 @@ defaultSize = 10
 gapSize = 1
 left = 10
 top = 10
-gridColor = "red"
 
 class Cell(Grid.Cell):
     def __init__(self, inputRect : pygame.Rect, aliveColor = "red", deadColor = "blue"):
-        self.color = "blue"
         self.aliveColor = aliveColor
         self.deadColor = deadColor
         self.rect = inputRect
         self.alive = False
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        if self.alive:
+            pygame.draw.rect(screen, self.aliveColor, self.rect)
+        else:
+            pygame.draw.rect(screen, self.deadColor, self.rect)
 
     def setAlive(self, alive):
         self.alive = alive
-        self.color = self.deadColor
-        if self.alive:
-            self.color = self.aliveColor
 
 
 class GridTable(Grid.GridTable):
@@ -33,7 +31,6 @@ class GridTable(Grid.GridTable):
         self.cellList = []
         self.rowCount = rowCount
         self.colCount = colCount
-        self.gridColor = "red"
         self.gapSize = gapSize
         self.blockSize = defaultSize
         self.createRect()
@@ -41,8 +38,7 @@ class GridTable(Grid.GridTable):
     def createRect(self):
         for row in range(self.rowCount):
             for col in range (self.colCount):
-                self.cellList.append(Cell(pygame.Rect(left + col * ( self.blockSize + self.gapSize), top + row * ( self.blockSize + self.gapSize),  self.blockSize,  self.blockSize),
-                                     self.gridColor))
+                self.cellList.append(Cell(pygame.Rect(left + col * ( self.blockSize + self.gapSize), top + row * ( self.blockSize + self.gapSize),  self.blockSize,  self.blockSize)))
     
     def draw(self, screen):
         for i in range(len(self.cellList)):
@@ -138,23 +134,48 @@ class GridTable(Grid.GridTable):
 
 
     #Dummy function for next time. Got to plan this out a bit more
-    def SetNeighboursConway(self, col, row, setAliveList):
-        return 
+    def SetNeighboursConway(self, col, row, setAliveList, setDeadList):
+
+        #Rule 1: Any alive cell with two or three live neighbours become a live cell
+        #Rule 2: Any dead cell with three live neighbours becomes a live cell
+
+        cellCheck = self.accessCell(col, row)
+        livingNeighbours = 0
+        for x in range(-1, 2):
+            for y in range(-1, 2):
+                if (x == 0 and y == 0):
+                    continue
+                if self.checkBound(col + x, row + y) and self.accessCell(col + x, row + y).alive:
+                    livingNeighbours += 1
+                    #print("Add Neighbour")
+        if livingNeighbours == 3:
+            setAliveList.append(cellCheck)
+        elif cellCheck.alive and livingNeighbours == 2:
+            setAliveList.append(cellCheck)
+        else:
+            #Rule 3: All other cells set to die
+            setDeadList.append(cellCheck)
 
     def UpdateGrid(self):
         # Cells to update after a check
         setAliveList = []
+        setDeadList = []
 
         #Set top neighbour alive if I am alive (like a virus but one way... for testing...)
         for row in range(self.rowCount):
             for col in range(self.colCount):
-                if self.accessCell(col, row).alive:
-                    self.SetNeighbours(col, row, setAliveList)
+                self.SetNeighboursConway(col, row, setAliveList, setDeadList)
+
+                #if self.accessCell(col, row).alive:
+                #    self.SetNeighbours(col, row, setAliveList)
 
 
-        #After checking everyone, only then do you set the neighbours to live (determinsitic behaviour)
+        #After checking everyone, only then do you set the cell to live (determinsitic behaviour)
         for cell in setAliveList:
             cell.setAlive(True)
+
+        for cell in setDeadList:
+            cell.setAlive(False)
                     
 
             
