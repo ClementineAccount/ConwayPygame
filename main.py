@@ -25,12 +25,18 @@ running = True
 grid = ConwayGrid.GridTable()
 
 mouse = pygame.mouse
+key = pygame.key
 
 wasRight = False
+wasPressedSpace = False
+
+elapsedTime = 0.0
+tickTimeSeconds = 0.1
+isPaused = True
 
 while running:   
     dt = clock.tick(60) / 1000
-   
+    elapsedTime += dt
     
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -53,6 +59,20 @@ while running:
         wasRight = True
     elif not clicks[2] and wasRight:
         wasRight = False
+
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_SPACE] and not wasPressedSpace:
+        isPaused = not isPaused
+        wasPressedSpace = True
+    elif not keys[pygame.K_SPACE] and wasPressedSpace:
+        wasPressedSpace = False
+
+    if elapsedTime > tickTimeSeconds:
+        elapsedTime = 0.0
+        if not isPaused:
+            grid.UpdateGrid()
+    
             
  
     # flip() the display to put your work on screen
