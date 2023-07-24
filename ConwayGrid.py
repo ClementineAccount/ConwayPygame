@@ -35,6 +35,9 @@ class GridTable(Grid.GridTable):
         self.gapSize = gapSize
         self.blockSize = defaultSize
         self.createRect()
+        self.setAliveList = []
+        self.setDeadList = []
+
 
     def createRect(self):
         for row in range(self.rowCount):
@@ -158,24 +161,24 @@ class GridTable(Grid.GridTable):
             setDeadList.append(cellCheck)
 
     def UpdateGrid(self):
-        # Cells to update after a check
-        setAliveList = []
-        setDeadList = []
+        # Cells to update after a chec
+        self.setAliveList.clear()
+        self.setDeadList.clear()
 
         #Set top neighbour alive if I am alive (like a virus but one way... for testing...)
         for row in range(self.rowCount):
             for col in range(self.colCount):
-                self.SetNeighboursConway(col, row, setAliveList, setDeadList)
+                self.SetNeighboursConway(col, row, self.setAliveList, self.setDeadList)
 
                 #if self.accessCell(col, row).alive:
                 #    self.SetNeighbours(col, row, setAliveList)
 
 
         #After checking everyone, only then do you set the cell to live (determinsitic behaviour)
-        for cell in setAliveList:
+        for cell in self.setAliveList:
             cell.setAlive(True)
 
-        for cell in setDeadList:
+        for cell in self.setDeadList:
             cell.setAlive(False)
                     
 
