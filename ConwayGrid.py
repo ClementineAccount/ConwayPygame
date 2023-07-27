@@ -54,10 +54,10 @@ class GridTable(Grid.GridTable):
             for col in range(colCount):
                 if col < oldCol and row < oldRow:
                     #print("col:", col, "\n row:", row)
-                    new_cell_list.append(copy.deepcopy(self.accessCell(col, row)))
+                    new_cell_list.append(copy.copy(self.accessCell(col, row)))
                 elif col >= oldCol or row >= oldRow:
                     new_cell_list.append(Cell(pygame.Rect(left + col * ( self.blockSize + self.gapSize), top + row * ( self.blockSize + self.gapSize),  self.blockSize,  self.blockSize)))
-        self.cellList = copy.deepcopy(new_cell_list)
+        self.cellList = copy.copy(new_cell_list)
         self.colCount = colCount
         self.rowCount = rowCount
 
