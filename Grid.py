@@ -41,6 +41,8 @@ class GridTable:
     def checkBound(self, col, row):
         if col >= self.colCount or row >= self.rowCount:
             return False
+        if col < 0 or row < 0:
+            return False
         return True
 
     # For like mouse clicking on the thing and stuff

@@ -44,9 +44,9 @@ class GridTable(Grid.GridTable):
             for col in range (self.colCount):
                 self.cellList.append(Cell(pygame.Rect(left + col * ( self.blockSize + self.gapSize), top + row * ( self.blockSize + self.gapSize),  self.blockSize,  self.blockSize)))
     
-    def draw(self, screen):
-        for i in range(len(self.cellList)):
-            self.cellList[i].draw(screen)
+    #def draw(self, screen):
+    #    for i in range(len(self.cellList)):
+    #        self.cellList[i].draw(screen)
 
     def checkBound(self, col, row):
         if col >= self.colCount or row >= self.rowCount:
