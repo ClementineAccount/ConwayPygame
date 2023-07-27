@@ -36,6 +36,8 @@ elapsedTime = 0.0
 tickTimeSeconds = 0.1
 isPaused = True
 
+pygame.display.set_icon(pygame.image.load('icon.png'))
+
 while running:   
     dt = clock.tick(60) / 1000
     elapsedTime += dt
