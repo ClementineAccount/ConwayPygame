@@ -1,5 +1,6 @@
 import pygame
 import Grid
+import copy
 import math
 
 #Size of the cell represented as a rect
@@ -43,17 +44,24 @@ class GridTable(Grid.GridTable):
         for row in range(self.rowCount):
             for col in range (self.colCount):
                 self.cellList.append(Cell(pygame.Rect(left + col * ( self.blockSize + self.gapSize), top + row * ( self.blockSize + self.gapSize),  self.blockSize,  self.blockSize)))
-    
-    #def draw(self, screen):
-    #    for i in range(len(self.cellList)):
-    #        self.cellList[i].draw(screen)
 
-    def checkBound(self, col, row):
-        if col >= self.colCount or row >= self.rowCount:
-            return False
-        if col < 0 or row < 0:
-            return False
-        return True
+    def resizeGrid(self, colCount, rowCount):
+        oldRow = self.rowCount
+        oldCol = self.colCount
+        new_cell_list = []
+
+        for row in range(rowCount):
+            for col in range(colCount):
+                if col < oldCol and row < oldRow:
+                    #print("col:", col, "\n row:", row)
+                    new_cell_list.append(copy.deepcopy(self.accessCell(col, row)))
+                elif col >= oldCol or row >= oldRow:
+                    new_cell_list.append(Cell(pygame.Rect(left + col * ( self.blockSize + self.gapSize), top + row * ( self.blockSize + self.gapSize),  self.blockSize,  self.blockSize)))
+        self.cellList = copy.deepcopy(new_cell_list)
+        self.colCount = colCount
+        self.rowCount = rowCount
+
+
 
     # For like mouse clicking on the thing and stuff
     def clickGrid(self, posX, posY):

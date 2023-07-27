@@ -27,8 +27,10 @@ grid = ConwayGrid.GridTable()
 mouse = pygame.mouse
 key = pygame.key
 
+
 wasRight = False
 wasPressedSpace = False
+wasPressedD = False
 
 elapsedTime = 0.0
 tickTimeSeconds = 0.1
@@ -43,6 +45,16 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_d:
+                grid.resizeGrid(grid.colCount + 1, grid.rowCount)
+            if event.key == pygame.K_s:
+                grid.resizeGrid(grid.colCount, grid.rowCount + 1)
+            if event.key == pygame.K_w:
+                grid.resizeGrid(grid.colCount, grid.rowCount - 1)
+            if event.key == pygame.K_a:
+                grid.resizeGrid(grid.colCount - 1, grid.rowCount)    
+                
 
 
     clicks = mouse.get_pressed(3)
@@ -67,6 +79,7 @@ while running:
         wasPressedSpace = True
     elif not keys[pygame.K_SPACE] and wasPressedSpace:
         wasPressedSpace = False
+    
 
     if elapsedTime > tickTimeSeconds:
         elapsedTime = 0.0
