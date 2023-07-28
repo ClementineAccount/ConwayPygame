@@ -17,3 +17,9 @@ Enter the following in the same directory as the script
 ```
 python .\main.py
 ```
+
+# Controls
+
+Spacebar to pause/start the simulation
+Left click to place alive cells
+Right click to manually advance one tick.
